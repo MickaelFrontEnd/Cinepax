@@ -33,9 +33,13 @@ namespace Cinepax.Services
                 // Update user total token
                 User actualUser = cinepaxContext
                     .Users
-                    .Find(booking.User.ID);
+                    .SingleOrDefault(item => item.ID == booking.User.ID);
                 int amountBefore = actualUser.TotalToken;
                 actualUser.TotalToken -= booking.TotalPrice;
+
+                booking.User = actualUser;
+
+                string reservationType = booking.ReservationType == 0 ? "simple" : "VIP";
                
 
                 // Add transaction
@@ -43,9 +47,9 @@ namespace Cinepax.Services
                     .Transactions
                     .Add(new Transaction()
                     {
-                        User = booking.User,
+                        User = actualUser,
                         Projection = booking.Projection,
-                        Description = $"Resérvation du film <<{booking.Projection.Movie.Name}>> du <<{booking.Projection.ProjectionDate}>>",
+                        Description = $"Resérvation du film {booking.Projection.Movie.Name} du {booking.Projection.ProjectionDate.ToString("dd-MM-yyyy")} de {booking.SeatBooked} {reservationType} place(s)",
                         AmountBefore = amountBefore,
                         AmountAfter = actualUser.TotalToken
                     }) ;

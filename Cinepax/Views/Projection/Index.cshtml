@@ -24,10 +24,10 @@
     {
         <div class="col-md-3 mb-3">
             <div class="card">
-              <img src="@item.Movie.Picture" class="card-img-top" alt="...">
+              <img src="@item.Movie.Picture" class="card-img-top" alt="..." height="503">
               <div class="card-body">
                 <h5 class="card-title">@item.Movie.Name</h5>
-                <p class="card-text"><b>Date et Heure:</b> @item.ProjectionDate<br /> <b>Salle:</b> @item.Room.Name <br/> <b>Prix:</b> @item.Price jetons </p>
+                <p class="card-text"><b>Date de projection:</b> @item.ProjectionDate.ToString("dd-MM-yyyy")<br /> <b>Salle:</b> @item.Room.Name <br/> <b>Prix:</b> @item.Price jetons </p>
                 @Html.ActionLink("Resérver ma place", "Index", "Booking", new { @id = item.ID }, new { @class = "btn btn-outline-primary" })
               </div>
             </div>

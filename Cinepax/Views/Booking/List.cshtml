@@ -8,20 +8,22 @@
                         <tr>
                             <th scope="col">Client</th>
                             <th scope="col">Film</th>
-                            <th scope="col">Date et heure</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Salle</th>
                             <th scope="col" class="text-right">Place resérvées</th>
                             <th scope="col" class="text-right">Prix en jetons</th>
+                            <th class="text-right">PDF</th>
                         </tr>
                         @foreach (var item in Model)
                         {
                             <tr>
                                 <td>@item.User.FirstName @item.User.Lastname</td>
                                 <td>@item.Projection.Movie.Name</td>
-                                <td>@item.Projection.ProjectionDate</td>
+                                <td>@item.Projection.ProjectionDate.ToString("dd-MM-yyyy")</td>
                                 <td>@item.Projection.Room.Name</td>
                                 <td class="text-right">@item.SeatBooked</td>
                                 <td class="text-right">@item.TotalPrice</td>
+                                <td class="text-right"><button class="btn btn-warning" onclick="printPDF('@item.User.FirstName @item.User.Lastname', '@item.Projection.Movie.Name', '@item.Projection.ProjectionDate.ToString("dd-MM-yyyy")', '@item.Projection.Room.Name', '@item.TotalPrice', '@item.SeatBooked')"><i class="fa fa-book"></i> Reçu en PDF</button></td>
                             </tr>
                         }
                     </thead>
@@ -32,4 +34,34 @@
         </div>
     </div>
 </div>
-
+<script>
+    function printPDF (nom, film, date, salle, prix, place) {
+        var divContents = '<table>';
+        divContents += '<tr>';
+        divContents += '<td>Nom:</td>'; divContents += '<td>' + nom + '</td>';
+        divContents += '</tr>';
+        divContents += '<tr>';
+        divContents += '<td>Film:</td>'; divContents += '<td>' + film + '</td>';
+        divContents += '</tr>';
+        divContents += '<tr>';
+        divContents += '<td>Date:</td>'; divContents += '<td>' + date + '</td>';
+        divContents += '</tr>';
+        divContents += '<tr>';
+        divContents += '<td>Salle:</td>'; divContents += '<td>' + salle + '</td>';
+        divContents += '</tr>';
+        divContents += '<tr>';
+        divContents += '<td>Place:</td>'; divContents += '<td>' + place + '</td>';
+        divContents += '</tr>';
+        divContents += '<tr>';
+        divContents += '<td>Prix:</td>'; divContents += '<td>' + prix + ' Jetons</td>';
+        divContents += '</tr>';
+        divContents += '</table>';
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Reću de resérvation</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>

@@ -32,6 +32,8 @@ namespace Cinepax.Controllers
                 booking.Projection = projectionService.GetProjection(booking.Projection.ID);
                 bookingService.Book(booking);
 
+                Session["user"] = booking.User;
+
                 return RedirectToAction("List");
             }
             catch(Exception ex)
