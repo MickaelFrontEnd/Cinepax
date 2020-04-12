@@ -1,0 +1,25 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"].ToString();
+    var action = ViewContext.RouteData.Values["Action"].ToString();
+}
+
+<aside id="left-panel" class="left-panel">
+        <nav class="navbar navbar-expand-sm navbar-default">
+            <div id="main-menu" class="main-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="@(action == "Index" && controller == "Projection" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Projection")"><i class="menu-icon fa fa-film"></i>Cinéma en salle </a>
+                    </li>                  
+                    <li class="@(action == "List" && controller == "Booking" ? "active" : "")">
+                        <a href="@Url.Action("List", "Booking")"><i class="menu-icon fa fa-archive"></i>Resérvation </a>
+                    </li>
+                    <li class="@(action == "Index" &&  controller == "Transaction" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Transaction")"><i class="menu-icon fa fa-money"></i>Transaction </a>
+                    </li>
+                     <li class="@(action == "Calendar" &&  controller == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Calendar", "Home")"><i class="menu-icon fa fa-calendar-o"></i>Agenda </a>
+                    </li>  
+                </ul>
+            </div>
+        </nav>
+    </aside>

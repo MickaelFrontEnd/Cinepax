@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Cinepax.Models.Booking>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Client</th>
+                            <th scope="col">Film</th>
+                            <th scope="col">Date et heure</th>
+                            <th scope="col">Salle</th>
+                            <th scope="col" class="text-right">Place resérvées</th>
+                            <th scope="col" class="text-right">Prix en jetons</th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.User.FirstName @item.User.Lastname</td>
+                                <td>@item.Projection.Movie.Name</td>
+                                <td>@item.Projection.ProjectionDate</td>
+                                <td>@item.Projection.Room.Name</td>
+                                <td class="text-right">@item.SeatBooked</td>
+                                <td class="text-right">@item.TotalPrice</td>
+                            </tr>
+                        }
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

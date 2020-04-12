@@ -1,0 +1,104 @@
+﻿@model Cinepax.Models.Booking
+@using System.Web.Mvc
+@using Cinepax.Models
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="@Model.Projection.Movie.Picture" class="card-img-top" alt="...">
+            </div>
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h2 class="card-title">@Model.Projection.Movie.Name</h2>
+                            <p class="card-text"><b>Date et Heure:</b> @Model.Projection.ProjectionDate<br /> <b>Salle:</b> @Model.Projection.Room.Name <br /> <b>Prix:</b> @Model.Projection.Price jetons </p>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.SeatBooked):
+                                    @Html.EditorFor(model => model.SeatBooked, new
+                                    {
+                                        htmlAttributes = new { @class = "form-control", @type = "number", data_parsley_required = "", data_parsley_required_message = "Veuillez renseigner le nombre de place à resérver", data_parsley_range = "[1,10]", data_parsley_range_message = "Vous ne pouvez que faire une resérvation de 1 à 10 places" }
+                                    })
+                                </div>
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.ReservationType,
+                                                     new List<SelectListItem>() {
+                                                new SelectListItem(){Text="Simple", Value="0"},
+                                                new SelectListItem(){Text="Vip", Value="1"}
+                     }, "Choisir votre type de resérvation", new { @class = "form-control", id = "reservation-type" })
+                                </div>
+                                @Html.HiddenFor(x => x.Projection.ID)
+                                <div class="alert alert-info" style="display:none">Pour les places VIP, le prix d'une place sera 2 fois du prix normal</div>
+                                <p class="text-center text-danger">@ViewBag.AmountError</p>
+                                <button type="submit" class="btn btn-success">Effectuer la resérvation</button>
+                                <a href="@Url.Action("Index", "Projection")" class="btn btn-primary">Retour vers la liste des cinémas</a>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-five">
+                            <div class="stat-icon dib flat-color-1">
+                                <i class="pe-7s-cash"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="text-left dib">
+                                    <div class="stat-text"><span class="count">@(((User)Session["user"]).TotalToken)</span> Token</div>
+                                    <div class="stat-heading">Solde disponible</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>window.onload = function () {
+        $('form').parsley();
+        $('#reservation-type').change(function (event) {
+            if ($('#reservation-type').val() === "1") {
+                $('.alert-info').css('display', 'block');
+            }
+            else {
+                $('.alert-info').css('display', 'none');
+            }
+        });
+        $('.count').each(function () {
+            $(this).prop('Counter', 0).animate({
+                Counter: $(this).text()
+            }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function (now) {
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+            });
+        }
+</script>
+<style>
+
+    .parsley-errors-list {
+        list-style: none;
+        margin-top: 0.5rem;
+        color: #dc3545 !important;
+    }
+
+    .parsley-error {
+        border-color: #dc3545 !important;
+        outline: none !important;
+        color: #dc3545 !important;
+        box-shadow: none !important;
+    }
+</style>
+

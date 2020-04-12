@@ -1,0 +1,94 @@
+﻿@model Cinepax.ViewModel.ProjectionViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Index", "Projection", FormMethod.Get, new { @class="form-inline" }))
+                {
+                    <div class="form-group mr-3" style="width: 300px;">
+                        <input type="text" class="form-control" name="terms" value="@Model.Terms" placeholder="Taper le nom d'un film ici" style="width: 100%"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Rechercher"/>
+                    </div>
+                    
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+@{
+    foreach (var item in Model.Projections)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card">
+              <img src="@item.Movie.Picture" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">@item.Movie.Name</h5>
+                <p class="card-text"><b>Date et Heure:</b> @item.ProjectionDate<br /> <b>Salle:</b> @item.Room.Name <br/> <b>Prix:</b> @item.Price jetons </p>
+                @Html.ActionLink("Resérver ma place", "Index", "Booking", new { @id = item.ID }, new { @class = "btn btn-outline-primary" })
+              </div>
+            </div>
+        </div>
+    }
+}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="pagination"></div>
+             </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        $('#pagination').bootpag({
+            total: @Model.TotalResult,
+            maxVisible: 4,
+            page: @Model.Page,
+            wrapClass: "pagination justify-content-center"
+        }).on("page", function (event, num) {
+            event.preventDefault();
+            document.location.href = "/Projection/?terms=" + $('input').val() + "&page=" + num;
+        });
+    }
+</script>
+<style>
+    .pagination {
+        margin-bottom: 0px;
+    }
+    .pagination a  {
+        position: relative;
+        display: block;
+        padding: .5rem .75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+    }
+    .pagination a:hover {
+        z-index: 2;
+        color: #0056b3;
+        text-decoration: none;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    .active a {
+        z-index: 1;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .disabled a {
+        color: #6c757d;
+        pointer-events: none;
+        cursor: auto;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+</style>
